@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sheet Dashboard</title>
+<style>
+  body {
+    margin:0; padding:0; font-family: sans-serif;
+    background-color: #121212; color: #eee;
+  }
+  #header {
+    padding: 15px; background-color: #1e1e1e; text-align:center;
+  }
+  #stats {
+    padding: 10px; background-color: #1a1a1a; margin:10px auto; width:90%;
+    border-radius: 8px;
+  }
+  iframe {
+    width: 95%; height: 80vh; margin:10px auto; display:block;
+    border:1px solid #333;
+  }
+  ul { padding-left:20px; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <h1>Google Sheet Dashboard</h1>
+</div>
+
+<div id="stats">
+  <div>Total Views: <span id="total">Loading...</span></div>
+  <div>Today's Views: <span id="today">Loading...</span></div>
+  <div>Last 5 Views:</div>
+  <ul id="last5"><li>Loading...</li></ul>
+</div>
+
+<iframe src="https://docs.google.com/spreadsheets/d/1d6U03chgX3RCUfE96pBGQY3NXJmn4LVb8pRWCqIa26Y/edit?usp=sharing"></iframe>
+
+<script>
+const WEBAPP_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLj17dF2g14hDrOhXYrqPDh2vova775LYHiuEs9P5dizFs_oCV7T_SqjYyEGEL4mwOOiPPimK-Ki91IV8wyZzIZb5F0KCnDAyFktLojtHGI4ZjhJBAnUrvoGcpXaKkHRAEE0XmhIIiUM0VS1OU7me8XZbNUDcPl_WdS5cIKPSef_6gl_AL9zUynMCmUNjRsy53DNrs8_WsqB1uuriJMl0RTIT_v9k1SxpCHjiekqgGugdTYxMD1_cbvsk-8M4fzLmhv6y7Myn6qNQAaVi-nJlWBu0sOhyA&lib=MiPd5BI3xMpjab4KqBz93jwnfG7kaZY5d"; // replace with your Apps Script URL
+
+fetch(WEBAPP_URL)
+.then(res => res.json())
+.then(data => {
+  document.getElementById('total').innerText = data.total;
+  document.getElementById('today').innerText = data.today;
+  const ul = document.getElementById('last5');
+  ul.innerHTML = '';
+  data.last5.forEach(ts => {
+    const li = document.createElement('li');
+    li.innerText = ts;
+    ul.appendChild(li);
+  });
+})
+.catch(err=>{
+  console.error(err);
+  document.getElementById('total').innerText='Error';
+  document.getElementById('today').innerText='Error';
+  document.getElementById('last5').innerHTML='<li>Error</li>';
+});
+</script>
+
+</body>
+</html>
